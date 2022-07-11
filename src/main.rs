@@ -1,10 +1,17 @@
-use std::env;
+pub mod rom;
 
-fn main() -> Result<(), std::io::Error> {
+use std::{env, io};
+
+fn main() -> io::Result<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
-        panic!("Expected only the path to the ROM.");
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            "Expected only the path to the ROM.",
+        ));
     }
+
+    let r = rom::Rom::new(&args[1])?;
 
     Ok(())
 }
